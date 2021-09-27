@@ -4,12 +4,8 @@ from pathlib import Path
 from .dataset import ArchivesDataset, SubmissionsDataset, BidsDataset
 from .config import ModelConfig
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('config', help='a JSON file containing all other arguments')
-    args = parser.parse_args()
-
-    config = ModelConfig(config_file_path=args.config)
+def main(config_path):
+    config = ModelConfig(config_file_path=config_path)
     archives_dataset = ArchivesDataset(archives_path=Path(config['dataset']['directory']).joinpath('archives'))
     if Path(config['dataset']['directory']).joinpath('submissions').exists():
         submissions_dataset = SubmissionsDataset(submissions_path=Path(config['dataset']['directory']).joinpath('submissions'))
@@ -158,3 +154,11 @@ if __name__ == '__main__':
             ens_predictor.sparse_scores(
                 scores_path=Path(config['model_params']['scores_path']).joinpath(config['name'] + '_sparse.csv')
             )
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('config', help='a JSON file containing all other arguments')
+    args = parser.parse_args()
+
+    main(args.config)
+
