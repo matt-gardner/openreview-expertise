@@ -51,8 +51,9 @@ def main(config_path):
         )
         elmoModel.set_archives_dataset(archives_dataset)
         elmoModel.set_submissions_dataset(submissions_dataset)
-        if not config['model_params'].get('skip_elmo', False):
+        if config['model_params'].get('embed_publications', True):
             elmoModel.embed_publications(publications_path=Path(config['model_params']['publications_path']).joinpath('pub2vec.pkl'))
+        if config['model_params'].get('embed_submissions', True):
             elmoModel.embed_submissions(submissions_path=Path(config['model_params']['submissions_path']).joinpath('sub2vec.pkl'))
         elmoModel.all_scores(
             publications_path=Path(config['model_params']['publications_path']).joinpath('pub2vec.pkl'),
